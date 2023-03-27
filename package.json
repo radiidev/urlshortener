@@ -1,5 +1,5 @@
 {
-  "name": "shorturl",
+  "name": "@radii-fcc-backend/shorturl",
   "version": "0.0.3",
   "description": "API project for freeCodeCamp",
   "main": "index.js",
@@ -11,9 +11,10 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongoose": "^7.0.3"
   },
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "nodemon": "^2.0.4"
   }
