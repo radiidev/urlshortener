@@ -32,21 +32,23 @@ const counterSchema = new mongoose.Schema({
 
 const Counter = mongoose.model("Counter", counterSchema);
 
+let shortUrlsCounterSet = false;
 let shortUrlsCounter = 0;
-
 Counter.findOne({ name: "shortUrl" })
   .then((counter) => {
     if (counter) {
-      shortUrlsCounter = counter.seq;
       console.log(`Old counter: ${counter}`);
+      shortUrlsCounter = counter.seq;
+      shortUrlsCounterSet = true;
     } else {
       const shortUrlsCounterModel = new Counter({ name: "shortUrl" });
       shortUrlsCounterModel
         .save()
         .then((counter) => {
           if (counter) {
-            shortUrlsCounter = counter.seq;
             console.log(`New counter: ${counter}`);
+            shortUrlsCounter = counter.seq;
+            shortUrlsCounterSet = true;
           } else {
             console.log(`Error: could not create a new counter`);
           }
@@ -68,6 +70,12 @@ app.use(express.urlencoded({ extended: false }));
 
 // Your first API endpoint
 app.post("/api/shorturl/", (req, res) => {
+  if (!shortUrlsCounterSet) {
+    res.status(503);
+    return res.send(
+      "Sorry, this API endpoint is not yet ready to handle requests!"
+    );
+  }
   const original = req.body.url;
   try {
     const hostname = new URL(original).hostname;
